@@ -1,5 +1,5 @@
 import React from 'react';
-import GlassCard from '../component/GlassCard';
+import GlassCard from '../components/GlassCard';
 import { Trees } from 'lucide-react';
 
 const Nature = () => {
