@@ -49,7 +49,7 @@ const Home = () => {
           </motion.p>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md shadow-2xl">
-            <Link to="/attractions" className="w-full sm:w-auto bg-gradient-to-r from-luxury-gold to-luxury-goldLight text-luxury-darkGreen px-8 py-4 rounded-lg font-bold uppercase tracking-wider hover:opacity-90 transition text-center">
+            <Link to="/attractions" className="w-full sm:w-auto bg-gradient-to-r from-luxury-gold to-luxury-goldLight text-luxury-darkGreen px-8 py-4 rounded-lg font-bold uppercase tracking-wider hover:shadow-2xl transition-all">
               Explore Now
             </Link>
           </div>
