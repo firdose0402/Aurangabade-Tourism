@@ -4,8 +4,8 @@ import { Trees } from 'lucide-react';
 
 const Nature = () => {
   const spots = [
-    { name: "Mhaismal", desc: "A beautiful, serene hill station offering panoramic view landscapes draped in fog during monsoon seasons.", image: "https://images.unsplash.com/photo-1506744038136-46[...]
-    { name: "Gautala Wildlife Sanctuary", desc: "Lush tropical green landscapes sprawling with pristine dry deciduous forest habitats and rich animal life biodiversity.", image: "https://images.uns[...]
+    { name: "Mhaismal", desc: "A beautiful, serene hill station offering panoramic view landscapes draped in fog during monsoon seasons.", image: "https://images.unsplash.com/photo-1506744038136-46a47ad92666?w=500&h=350&fit=crop" },
+    { name: "Gautala Wildlife Sanctuary", desc: "Lush tropical green landscapes sprawling with pristine dry deciduous forest habitats and rich animal life biodiversity.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=350&fit=crop" },
   ];
 
   return (
