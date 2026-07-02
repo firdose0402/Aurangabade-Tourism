@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Clock, CircleDollarSign } from 'lucide-react';
-import GlassCard from '../component/GlassCard';
+import GlassCard from '../components/GlassCard';
 
 const Attractions = () => {
   const [data, setData] = useState([]);
