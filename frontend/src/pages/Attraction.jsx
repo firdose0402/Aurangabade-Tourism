@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Clock, CircleDollarSign } from 'lucide-react';
-import GlassCard from '../components/GlassCard';
+import GlassCard from '../component/GlassCard';
 
 const Attractions = () => {
   const [data, setData] = useState([]);
@@ -39,7 +39,7 @@ const Attractions = () => {
                 <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-luxury-gold" /> <span>{item.openingHours}</span></div>
                 <div className="flex items-center gap-2"><CircleDollarSign className="w-4 h-4 text-luxury-gold" /> <span>{item.entryFee}</span></div>
               </div>
-              <a href={item.mapsLink} target="_blank" rel="noreferrer" className="mt-6 flex items-center justify-center gap-2 w-full bg-luxury-darkGreen text-luxury-white py-3 rounded-lg hover:bg-luxury-gold hover:text-luxury-darkGreen font-bold tracking-wider transition uppercase text-xs">
+              <a href={item.mapsLink} target="_blank" rel="noreferrer" className="mt-6 flex items-center justify-center gap-2 w-full bg-luxury-darkGreen text-luxury-white py-3 rounded-lg hover:bg-[...]
                 <MapPin className="w-4 h-4" /> View On Maps
               </a>
             </div>
