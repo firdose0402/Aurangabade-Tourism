@@ -20,7 +20,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav class="fixed top-0 left-0 w-full z-50 bg-luxury-darkGreen border-b border-luxury-gold/20 shadow-xl px-4 md:px-12 py-4 flex justify-between items-center text-luxury-white">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-luxury-darkGreen border-b border-luxury-gold/20 shadow-xl px-4 md:px-12 py-4 flex justify-between items-center text-luxury-white">
       <Link to="/" className="flex items-center gap-2 text-xl font-bold tracking-widest text-luxury-gold">
         <Compass className="w-6 h-6 animate-spin-slow" />
         AURANGABAD TOURISM
@@ -42,7 +42,7 @@ const Navbar = () => {
 
       {/* Mobile Burger Trigger */}
       <button onClick={() => setIsOpen(!isOpen)} className="xl:hidden text-luxury-gold focus:outline-none">
-        {isOpen ? <X class="w-7 h-7" /> : <Menu class="w-7 h-7" />}
+        {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
       </button>
 
       {/* Mobile Menu Box */}
