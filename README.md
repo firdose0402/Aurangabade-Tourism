@@ -1,98 +1,255 @@
-# Aurangabad Tourism
+# Aurangabad Tourism Portal
 
-A simple full-stack project (React + Vite frontend, Express backend) for the Aurangabad tourism site.
+A modern, full‑stack tourism web application showcasing the beauty and heritage of Aurangabad. Built with a Vite + React frontend and an Express + Node backend, this project is ready for local development and production deployment (Docker / docker‑compose). It is styled with Tailwind CSS and designed for a smooth developer experience and simple deployment.
 
-This repository contains two main folders:
-- `frontend/` — React app built with Vite and Tailwind CSS
-- `backend/` — Express API server
+---
 
-This README explains how to run the project locally (dev and build), and how to run it with Docker / Docker Compose.
+## ✨ Highlights
+
+- Fast, HMR‑enabled development with Vite (React).
+- Tailwind CSS for utility‑first styling.
+- Express API backend with ready‑to‑extend routes.
+- Docker multi‑stage build for a production frontend served by nginx and a production-ready backend container.
+- Easy orchestration with docker‑compose.
+
+---
+
+## Features
+
+### Frontend (React + Vite)
+- Fast dev server and instant updates via Vite.
+- SPA routing (React Router).
+- Tailwind CSS utilities, components and base layers configured.
+- Built for production using Vite's build pipeline.
+- Ready for proxying API calls to backend in production (nginx) or development (Vite proxy).
+
+### Backend (Express)
+- Minimal, extendable Express server with JSON parsing and CORS enabled.
+- Example health and sample API routes.
+- Uses environment variables (dotenv) for configuration.
+- Prepared for containerized deployment.
+
+---
+
+## Tech Stack
+- Frontend: React, Vite, Tailwind CSS
+- Backend: Node.js, Express
+- Database: MongoDB (connect via MONGO_URI)
+- Production serving: nginx (frontend static files)
+- Containerization: Docker + docker‑compose
 
 ---
 
 ## Prerequisites
+
 - Node.js 18+ and npm
-- (Optional) Docker & Docker Compose for containerized run
+- Git
+- (Optional / recommended) Docker & Docker Compose v2 for containerized deployment
+- MongoDB instance (URI) — local or cloud (MongoDB Atlas)
 
 ---
 
-## Local development
+## Environment Variables
 
-### Frontend (dev)
-1. Open a terminal and run:
+Create a `.env` file in `backend/` with at least:
 
+```
+# backend/.env
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/aurangabad?retryWrites=true&w=majority
+PORT=5000
+NODE_ENV=development
+```
+
+If you use Vite to call the backend during development and want environment variables in the client, use Vite's `VITE_` prefix (e.g., `VITE_API_BASE_URL`) and place them in `frontend/.env`.
+
+---
+
+## Local Development — Step by Step
+
+1. Clone the repo
+```bash
+git clone https://github.com/firdose0402/Aurangabade-Tourism.git
+cd Aurangabade-Tourism
+```
+
+2. Start the backend (API)
+```bash
+cd backend
+# install dependencies
+npm install
+# start in dev mode (nodemon)
+npm run dev
+# OR run production mode
+# npm start
+```
+Open http://localhost:5000/ to verify the backend (example health route).
+
+3. Start the frontend (Vite)
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+Open the Vite URL printed in the console (typically http://localhost:5173).
+
+Notes:
+- `frontend/src/main.jsx` imports `./index.css`. That file lives at `frontend/src/index.css` and must include these top lines for Tailwind to work:
+  ```css
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  ```
+- If Vite cannot find the config, run `npm run dev` from the `frontend/` folder (where `package.json` and `vite.config.js` live). Alternatively use a repo-root `vite.config.js` with `root: 'frontend'`.
+
+---
+
+## Build for Production (locally)
+
+1. Build the frontend
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run build
+# `dist/` directory will be produced
 ```
 
-2. Visit the Vite dev URL printed in the console (usually http://localhost:5173).
-
-Notes:
-- `frontend/src/main.jsx` imports `./index.css` (which includes Tailwind directives). The Vite dev server should be run from the `frontend/` folder so Vite finds `package.json` and `vite.config.js`.
-- If you want the frontend dev server to proxy API requests to the backend, add a `server.proxy` entry in `frontend/vite.config.js`.
-
-### Backend (dev)
-1. Open another terminal and run:
-
+2. Start the backend in production
 ```bash
-cd backend
-npm install
-npm run dev
+cd ../backend
+npm install --production
+npm start
 ```
-
-2. The backend runs at http://localhost:5000 by default.
-
-If `backend/server.js` is missing, create it (a minimal example is in the repository or in the project instructions).
 
 ---
 
-## Build & Production (Docker)
-A `Dockerfile` exists for both frontend and backend. An `nginx.conf` is provided so the frontend is served by nginx and proxies `/api/` to the backend.
+## Docker Deployment (docker-compose)
 
-Place the `docker-compose.yml` file at the repo root (it orchestrates both services). Then run:
+This project includes multi‑stage Dockerfiles for the frontend (build with Node, serve with nginx) and the backend. An example `docker-compose.yml` that coordinates them is shown below — place it at the repository root and run the commands to build and run both services.
 
+Example `docker-compose.yml` (repo root)
+```yaml
+version: "3.8"
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aurangabad-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      # add MONGO_URI and other secrets via an env_file or docker secrets
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: aurangabad-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+```
+
+Build and run:
 ```bash
-# from repository root
+# from repo root
 docker compose up -d --build
-# view logs
+
+# follow logs
 docker compose logs -f
+
 # stop and remove
 docker compose down
 ```
 
-The stack maps ports:
-- Frontend: http://localhost/ (nginx on port 80)
-- Backend: http://localhost:5000/
+After starting:
+- Frontend served at: http://localhost/ (nginx on port 80)
+- Backend at: http://localhost:5000/
 
-If you prefer the single-container approach for frontend, the Dockerfiles are multi-stage (build with Node, serve with nginx).
-
----
-
-## Files added / updated
-The following helper and config files were added to make the project build and run cleanly:
-
-- frontend/vite.config.js — Vite configuration for the frontend
-- frontend/postcss.config.cjs — PostCSS config (Tailwind + autoprefixer)
-- frontend/tailwind.config.js — Tailwind configuration (content paths set)
-- frontend/nginx.conf — nginx config to serve built frontend and proxy `/api/` to backend
-- frontend/Dockerfile — Multi-stage Dockerfile (build with Node, serve with nginx)
-- backend/Dockerfile — Dockerfile for the backend
-- frontend/src/index.css — includes Tailwind directives at the top
-
-(If any of these files are missing or you prefer different names/locations, modify the Dockerfile and docker-compose accordingly.)
+Important:
+- Ensure `backend/server.js` listens on `0.0.0.0` (not `127.0.0.1`) so the container accepts external connections.
+- The frontend nginx config proxies `/api/` to `http://backend:5000/`. If your frontend calls a different base path, edit `frontend/nginx.conf` or update the client API base URL.
 
 ---
 
-## Troubleshooting
-- Vite can't find config / vite.config.js: make sure you run `npm run dev` from `frontend/` (the folder that contains `package.json`). Alternatively place a repo-root `vite.config.js` with `root: 'frontend'`.
-- `@tailwind` errors / IDE red squiggles: ensure `postcss.config.cjs` and `tailwind.config.cjs` (or `.js`) exist in `frontend/`, run `npm install` in `frontend/`, and install the "Tailwind CSS IntelliSense" extension in your editor.
-- Backend `npm run dev` fails: ensure `backend/server.js` exists and listens on `0.0.0.0`. Start it manually with `node server.js` to see errors.
-- Docker build errors: run the frontend build locally (`cd frontend && npm run build`) to see build errors, fix dependencies, then rebuild the image.
+## Troubleshooting & Tips
+
+- Vite cannot find config:
+  - Run `npm run dev` inside `frontend/`.
+  - Or create a repo-root vite.config with `root: 'frontend'`.
+
+- `@tailwind` directives show red squiggles in IDE:
+  - Confirm `frontend/postcss.config.cjs` and `frontend/tailwind.config.cjs` (or .js) exist.
+  - Run `npm install` inside `frontend/`.
+  - Install the “Tailwind CSS IntelliSense” VS Code extension and restart the editor.
+
+- Frontend build fails:
+  - Run `cd frontend && npm run build` locally and read the error logs.
+  - Ensure all devDependencies are present (tailwindcss, postcss, autoprefixer, etc.) if the build step expects them.
+
+- Backend errors:
+  - Start backend directly (`node server.js`) to see logs.
+  - Confirm `MONGO_URI` is correct and reachable.
+
+- Docker build issues:
+  - Build images locally with `docker compose build` and inspect the logs for the failing stage.
+  - Use `.dockerignore` to avoid copying `node_modules` or large files into image context.
 
 ---
 
-If you want, I can also commit `docker-compose.yml` to the repository root and add a minimal `backend/server.js` if it's missing — confirm and I will add them.
+## Project Structure (recommended)
+```
+/ (repo root)
+├─ frontend/
+│  ├─ public/ or index.html
+│  ├─ src/
+│  ├─ vite.config.js
+│  ├─ postcss.config.cjs
+│  ��─ tailwind.config.cjs
+│  ├─ nginx.conf
+│  └─ Dockerfile
+├─ backend/
+│  ├─ routes/
+│  ├─ models/
+│  ├─ server.js
+│  ├─ package.json
+│  └─ Dockerfile
+├─ docker-compose.yml
+└─ README.md
+```
 
-Happy hacking! If anything breaks, paste the error output here and I’ll help debug it.
+---
+
+## Contributing
+
+Contributions are welcome! Suggested workflow:
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feat/your-feature`
+3. Implement and test locally
+4. Open a pull request with a clear description and screenshots (if UI changes)
+
+---
+
+## License
+
+Add your chosen license here (MIT, Apache‑2.0, etc.). If you want, I can add a LICENSE file for you.
+
+---
+
+## Contact
+
+If you need help with configuration, deployment, or CI integration, open an issue in the repo or reach out via the repository contact.
+
+---
+
+Enjoy building the Aurangabad Tourism Portal — if you want, I can:
+- Commit this README into the repo,
+- Generate a `.env.example`,
+- Add a `.dockerignore` for frontend/backend,
+- Create CI workflow for building the Docker images on push.
+
+Tell me which of those you want next and I’ll proceed.
