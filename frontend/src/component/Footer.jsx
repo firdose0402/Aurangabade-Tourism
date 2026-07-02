@@ -32,7 +32,7 @@ const Footer = () => {
           <h4 className="text-md font-semibold text-luxury-gold mb-4 uppercase tracking-wider">Newsletter</h4>
           <p className="text-xs text-luxury-beige/60 mb-3">Subscribe to get premium itineraries and seasonal guides.</p>
           <form className="flex">
-            <input type="email" placeholder="Your email" className="w-full px-3 py-2 text-sm bg-luxury-darkGreen border border-luxury-gold/40 text-luxury-white focus:outline-none focus:border-luxury-gold" />
+            <input type="email" placeholder="Your email" className="w-full px-3 py-2 text-sm bg-luxury-darkGreen border border-luxury-gold/40 text-luxury-white focus:outline-none focus:border-luxury-gold placeholder-luxury-beige/40" />
             <button className="bg-luxury-gold text-luxury-darkGreen px-4 text-sm font-semibold hover:bg-luxury-goldLight transition-colors">Join</button>
           </form>
         </div>
